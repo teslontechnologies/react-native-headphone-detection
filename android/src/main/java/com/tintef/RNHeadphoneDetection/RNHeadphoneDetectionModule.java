@@ -67,11 +67,28 @@ public class RNHeadphoneDetectionModule extends ReactContextBaseJavaModule imple
       }
     };
 
-    reactContext.registerReceiver(receiver, new IntentFilter(Intent.ACTION_HEADSET_PLUG));
-    reactContext.registerReceiver(receiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
-    reactContext.registerReceiver(receiver, new IntentFilter(BluetoothAdapter.EXTRA_STATE));
-    reactContext.registerReceiver(receiver, new IntentFilter(BluetoothDevice.ACTION_ACL_CONNECTED));
-    reactContext.registerReceiver(receiver, new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECTED));
+    // reactContext.registerReceiver(receiver, new IntentFilter(Intent.ACTION_HEADSET_PLUG));
+    // reactContext.registerReceiver(receiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
+    // reactContext.registerReceiver(receiver, new IntentFilter(BluetoothAdapter.EXTRA_STATE));
+    // reactContext.registerReceiver(receiver, new IntentFilter(BluetoothDevice.ACTION_ACL_CONNECTED));
+    // reactContext.registerReceiver(receiver, new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECTED));
+
+    IntentFilter filterHeadset = new IntentFilter(Intent.ACTION_HEADSET_PLUG);
+    IntentFilter filterBluetoothState = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
+    IntentFilter filterBluetoothConnect = new IntentFilter(BluetoothDevice.ACTION_ACL_CONNECTED);
+    IntentFilter filterBluetoothDisconnect = new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECTED);
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && reactContext.getApplicationInfo().targetSdkVersion >= Build.VERSION_CODES.S) {
+      reactContext.registerReceiver(receiver, filterHeadset, Context.RECEIVER_EXPORTED);
+      reactContext.registerReceiver(receiver, filterBluetoothState, Context.RECEIVER_EXPORTED);
+      reactContext.registerReceiver(receiver, filterBluetoothConnect, Context.RECEIVER_EXPORTED);
+      reactContext.registerReceiver(receiver, filterBluetoothDisconnect, Context.RECEIVER_EXPORTED);
+    } else {
+      reactContext.registerReceiver(receiver, filterHeadset);
+      reactContext.registerReceiver(receiver, filterBluetoothState);
+      reactContext.registerReceiver(receiver, filterBluetoothConnect);
+      reactContext.registerReceiver(receiver, filterBluetoothDisconnect);
+    }
   }
 
   private void maybeUnregisterReceiver() {
