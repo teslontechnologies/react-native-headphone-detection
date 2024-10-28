@@ -9,10 +9,7 @@
   },
   "author": "Nicolás Tinte",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Tintef/react-native-headphone-detection.git"
-  },
+  "repository": "https://github.com/teslontechnologies/cordova-plugin-photoviewer",
   "bugs": {
     "url": "https://github.com/Tintef/react-native-headphone-detection/issues"
   },
